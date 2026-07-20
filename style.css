@@ -1,0 +1,237 @@
+:root {
+	/* Dynamic Watercolor Palette */
+	--canvas-bg: #FAF6F0; /* Soft watercolor paper texture */
+	--text-main: #3C2250; /* Deep berry/plum ink */
+	
+	--violet-wash: rgba(132, 94, 247, 0.2);
+	--teal-wash: rgba(56, 217, 169, 0.15);
+	--magenta-wash: rgba(255, 107, 129, 0.1);
+	
+	--accent-1: #FF5E78; /* Vibrant coral pink */
+	--accent-1-hover: #E04A62;
+	--accent-2: #845EF7; /* Periwinkle Violet */
+	
+	/* Blocky, 'Zines' style shadow */
+	--art-shadow: 6px 6px 0px rgba(60, 34, 80, 0.08);
+	
+	/* Fonts */
+	--font-header: 'Kalam', cursive, system-ui; /* Hand-drawn */
+	--font-body: 'Poppins', sans-serif; /* Clean/Readable */
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: var(--canvas-bg);
+	/* Base texture simulation */
+	background-image: 
+	linear-gradient(var(--teal-wash) 1px, transparent 1px),
+	linear-gradient(90deg, var(--magenta-wash) 1px, transparent 1px);
+	background-size: 25px 25px;
+	color: var(--text-main);
+	font-family: var(--font-body);
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 40px;
+}
+
+.palette-picks-app {
+	background: #FFFFFF;
+	width: 100%;
+	max-width: 500px;
+	padding: 50px 40px;
+	border: 3px solid rgba(60, 34, 80, 0.1);
+	border-radius: 12px;
+	box-shadow: var(--art-shadow);
+	position: relative;
+}
+
+/* Simulate dynamic watercolor splotches on the card */
+.palette-picks-app::before,
+.palette-picks-app::after {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(15px);
+	z-index: -1;
+}
+
+/* Violet Wash (Top-Right) */
+.palette-picks-app::before {
+	background-color: var(--accent-2);
+	opacity: 0.12;
+	width: 150px;
+	height: 150px;
+	top: 30px;
+	right: 20px;
+}
+
+/* Teal Wash (Bottom-Left) */
+.palette-picks-app::after {
+	background-color: #38D3A9;
+	opacity: 0.1;
+	width: 180px;
+	height: 180px;
+	bottom: 20px;
+	left: 30px;
+}
+
+header {
+	margin-bottom: 35px;
+	text-align: center;
+}
+
+h1 {
+	font-family: var(--font-header);
+	font-size: 2.8rem;
+	font-weight: 700;
+	color: var(--accent-2);
+	line-height: 1.1;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+	letter-spacing: -1px;
+}
+
+header p {
+	font-family: var(--font-header);
+	color: #7C668D;
+	font-size: 1.2rem;
+	font-weight: 700;
+}
+
+/* Input area styling */
+.input-section {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	margin-bottom: 40px;
+}
+
+.art-input-wrapper {
+	position: relative;
+}
+
+input[type="text"] {
+	width: 100%;
+	padding: 18px 24px;
+	font-family: var(--font-body);
+	font-size: 1.05rem;
+	color: var(--text-main);
+	background: rgba(255, 255, 255, 0.9);
+	border: 3px solid rgba(60, 34, 80, 0.1);
+	border-radius: 50px;
+	outline: none;
+	transition: all 0.2s ease;
+}
+
+input[type="text"]::placeholder {
+	color: #A094A8;
+	font-style: italic;
+}
+
+input[type="text"]:focus {
+	border-color: var(--accent-2);
+	background-color: #FFFFFF;
+	box-shadow: 0 0 15px rgba(132, 94, 247, 0.15);
+}
+
+/* Label is hidden visually for semantic correctness */
+label {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+/* Artistic ADD button */
+.btn-art-add {
+	align-self: flex-end;
+	background-color: var(--accent-1);
+	color: white;
+	font-family: var(--font-header);
+	font-size: 1.3rem;
+	font-weight: 700;
+	padding: 12px 30px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	box-shadow: 4px 4px 0px rgba(255, 94, 120, 0.15);
+	transition: all 0.15s ease-out;
+}
+
+.btn-art-add:hover {
+	background-color: var(--accent-1-hover);
+	box-shadow: 6px 6px 0px rgba(255, 94, 120, 0.2);
+	transform: translateY(-1px) translateX(-1px);
+}
+
+.btn-art-add:active {
+	transform: translateY(2px) translateX(2px);
+	box-shadow: 2px 2px 0px rgba(255, 94, 120, 0.1);
+}
+
+/* The list area */
+#list-container {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+/* Dynamic list items styled as 'brushed paint blocks' */
+li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 18px 25px;
+	border: 2px solid rgba(60, 34, 80, 0.08);
+	border-radius: 8px;
+	/* Initial watercolor wash */
+	background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 240, 243, 0.8) 100%);
+	animation: paintStrokeIn 0.4s ease-out;
+}
+
+li span {
+	font-size: 1.1rem;
+	font-weight: 600;
+	word-break: break-all;
+	padding-right: 20px;
+}
+
+/* Artistic integrated delete 'icon' */
+.btn-art-delete {
+	background: transparent;
+	color: var(--accent-1);
+	font-family: var(--font-header);
+	font-size: 1.2rem;
+	font-weight: 700;
+	border: 2px solid rgba(255, 94, 120, 0.2);
+	padding: 6px 18px;
+	border-radius: 50px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.btn-art-delete:hover {
+	background-color: #FFF0F3; /* Soft coral wash */
+	border-color: var(--accent-1);
+}
+
+/* Brush stroke animation on item entrance */
+@keyframes paintStrokeIn {
+	0% { opacity: 0; transform: scale(0.9) rotate(-3deg); }
+	70% { transform: scale(1.03) rotate(1deg); }
+	100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
