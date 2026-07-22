@@ -1,31 +1,15 @@
-const input = document.querySelector('#servings-input');
-const amount = document.querySelector('.amount');
+let shoppingForm = document.querySelector('#shopping-form');
+let input = document.querySelector('input');
+let list = document.querySelector('#list-container');
 
-input.addEventListener('input', () => {
-    let value = this.value;
+input.value = 1;
 
-    // Save to local storage
-    localStorage.setItem('globalServings', value);
-    let updateServingsEvent = new CustomEvent('updateServings', {
-        detail: {
-            servings: value
-        }   
-    });
-    window.dispatchEvent(updateServingsEvent);
-});
 
-// Update amount
-window.addEventListener('updateServings', function (e) {
-    amount.textContent  = e.detail.servings * 100;
-});
+shoppingForm.addEventListener('submit', function(e) {
+	e.preventDefault();
+	let task = input.value;
+	let li = document.createElement('li');
+	li.textContent = task;
 
-// Update other tabs value
-window.addEventListener('storage', (e) => {
-    if (e.key === 'globalServings') {
-        let updatedValue = e.newValue;
-        // console.log(updatedValue);
-
-        input.value = updatedValue;
-        amount.textContent = updatedValue * 100;
-    }
+	list.appendChild(li);
 });
