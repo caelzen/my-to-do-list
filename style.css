@@ -154,7 +154,7 @@ label {
 }
 
 /* Artistic ADD button */
-.btn-art-add {
+.btn-add {
 	align-self: flex-end;
 	background-color: var(--accent-1);
 	color: white;
@@ -171,13 +171,13 @@ label {
 	transition: all 0.15s ease-out;
 }
 
-.btn-art-add:hover {
+.btn-add:hover {
 	background-color: var(--accent-1-hover);
 	box-shadow: 6px 6px 0px rgba(255, 94, 120, 0.2);
 	transform: translateY(-1px) translateX(-1px);
 }
 
-.btn-art-add:active {
+.btn-add:active {
 	transform: translateY(2px) translateX(2px);
 	box-shadow: 2px 2px 0px rgba(255, 94, 120, 0.1);
 }
