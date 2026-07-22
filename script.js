@@ -1,10 +1,7 @@
 let shoppingForm = document.querySelector('#shopping-form');
 let input = document.querySelector('input');
 let list = document.querySelector('#list-container');
-let removeBtn = document.createElement('button');
 
-removeBtn.textContent = 'Remove';
-removeBtn.classList.add('btn-art-delete');
 
 
 shoppingForm.addEventListener('submit', function(e) {
@@ -13,9 +10,15 @@ shoppingForm.addEventListener('submit', function(e) {
 	let task = input.value;
 	let li = document.createElement('li');
 	let span = document.createElement('span');
-	span.textContent = task;
+	let removeBtn = document.createElement('button');
+
 
 	let id = document.querySelectorAll('#list-container li').length + 1;
+	
+	span.textContent = task;
+	removeBtn.textContent = 'Remove';
+	removeBtn.classList.add('btn-art-delete');
+	
 
 	if (task !== '') { 
 		li.id = 'task' + id;
@@ -23,5 +26,13 @@ shoppingForm.addEventListener('submit', function(e) {
 		li.appendChild(removeBtn);
 		list.appendChild(li);
 		input.value = '';
+	}
+});
+
+
+list.addEventListener('click', function(e) {
+	let target = e.target;
+	if(target.tagName === 'BUTTON') {
+		target.parentElement.remove();
 	}
 });
