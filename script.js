@@ -13,10 +13,24 @@ shoppingForm.addEventListener('submit', function(e) {
 		updateID();
 		addTask();
 		addTaskToArray();
+		addTaskToStorage();
 		clearInput();
 	}
+	
+
+	let updateTasksEvent = new CustomEvent('updateTasks', {
+		detail: {
+			taskItems: taskItemsArr,
+			listItems: list.children.length
+		}
+	});
+
+	window.dispatchEvent(updateTasksEvent);
 });
 
+window.addEventListener('updateTasks', (e) => {
+	let tasks = e.detail.taskItems
+});
 
 list.addEventListener('click', function(e) {
 	let target = e.target;
@@ -54,7 +68,13 @@ function createRemoveBtn() {
 
 function addTaskToArray() {
 	taskItemsArr.push(input.value);
-	localStorage.setItem('tasks', taskItemsArr);
+}
+
+function addTaskToStorage() {
+	localStorage.setItem('tasks', {
+		id: id,
+		tasks: taskItemsArr
+	});
 }
 
 function clearInput() {
