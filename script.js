@@ -10,7 +10,7 @@ shoppingForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 
 	if (input.value !== '') {
-		updateID();
+		generateID();
 		addTask();
 		addTaskToArray();
 		addTaskToStorage();
@@ -40,7 +40,7 @@ list.addEventListener('click', function(e) {
 });
 
 
-function updateID() {
+function generateID() {
 	id += 1;
 }
 
