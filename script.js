@@ -2,12 +2,15 @@ let shoppingForm = document.querySelector('#shopping-form');
 let input = document.querySelector('input');
 let list = document.querySelector('#list-container');
 let taskItemsArr = [];
+let id = 0;
+
+
 
 shoppingForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 
-	if (input.value !== '') { 
-		// createRemoveBtn();
+	if (input.value !== '') {
+		updateID();
 		addTask();
 		addTaskToArray();
 		clearInput();
@@ -23,12 +26,15 @@ list.addEventListener('click', function(e) {
 });
 
 
+function updateID() {
+	id += 1;
+}
+
 
 function addTask() {
 	let task = input.value;
 	let li = document.createElement('li');
 	let span = document.createElement('span');
-	let id = document.querySelectorAll('#list-container li').length + 1;
 	let removeBtn = createRemoveBtn();
 
 	li.id = 'task' + id;
@@ -48,6 +54,7 @@ function createRemoveBtn() {
 
 function addTaskToArray() {
 	taskItemsArr.push(input.value);
+	localStorage.setItem('tasks', taskItemsArr);
 }
 
 function clearInput() {
