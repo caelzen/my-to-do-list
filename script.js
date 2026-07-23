@@ -7,7 +7,7 @@ shoppingForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 
 	if (input.value !== '') { 
-		createRemoveBtn();
+		// createRemoveBtn();
 		addTask();
 		addTaskToArray();
 		clearInput();
@@ -29,11 +29,11 @@ function addTask() {
 	let li = document.createElement('li');
 	let span = document.createElement('span');
 	let id = document.querySelectorAll('#list-container li').length + 1;
-	
+	let removeBtn = createRemoveBtn();
 
 	li.id = 'task' + id;
 	li.appendChild(span);
-	li.appendChild(createRemoveBtn());
+	li.appendChild(removeBtn);
 	list.appendChild(li);
 	span.textContent = task;
 }
