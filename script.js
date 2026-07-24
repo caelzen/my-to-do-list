@@ -3,12 +3,21 @@ let input = document.querySelector('input');
 let list = document.querySelector('#list-container');
 let taskItemsArr = [];
 let id = 0;
+let isLocalStorageEmpty = checkLocalStorageEmpty();
 
+if (!isLocalStorageEmpty) {
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	let tasks = item.tasks;
 
+	console.log(tasks);
+}
 
 shoppingForm.addEventListener('submit', function(e) {
 	e.preventDefault();
 	let isListEmpty = checkListEmpty();
+	
+
+	main();
 
 	if (isListEmpty) {
 		console.log('list is empty');
@@ -16,7 +25,10 @@ shoppingForm.addEventListener('submit', function(e) {
 		console.log('list not empty');
 	}
 
+});
 
+
+function main() {
 	if (input.value !== '') {
 		generateID();
 		addTask();
@@ -34,7 +46,7 @@ shoppingForm.addEventListener('submit', function(e) {
 	});
 
 	window.dispatchEvent(updateTasksEvent);
-});
+}
 
 
 
@@ -111,7 +123,7 @@ function checkListEmpty() {
 	return false;
 }
 
-function checkLocalStorageIsEmpty() {
+function checkLocalStorageEmpty() {
 	if (localStorage.length === 0) { return true; }
 	return false;
 }
