@@ -2,14 +2,33 @@ let shoppingForm = document.querySelector('#shopping-form');
 let input = document.querySelector('input');
 let list = document.querySelector('#list-container');
 let taskItemsArr = [];
+let idArr = [];
 let id = 0;
 let isLocalStorageEmpty = checkLocalStorageEmpty();
 
+// localStorage.clear();
 if (!isLocalStorageEmpty) {
 	let item = JSON.parse(localStorage.getItem('tasks'));
 	let tasks = item.tasks;
+	let id = item.idArr;
+	let i = 0;
 
-	console.log(tasks);
+	tasks.forEach(task => {
+		let currentID = id[i];
+		
+		let li = document.createElement('li');
+		let span = document.createElement('span');
+		let removeBtn = createRemoveBtn();
+
+		li.id = 'task' + currentID;
+		li.appendChild(span);
+		li.appendChild(removeBtn);
+		list.appendChild(li);
+		span.textContent = task;
+
+		i++;
+	});
+	
 }
 
 shoppingForm.addEventListener('submit', function(e) {
@@ -27,10 +46,15 @@ shoppingForm.addEventListener('submit', function(e) {
 
 });
 
+function addIDToArray() {
+	idArr.push(id);
+}
+
 
 function main() {
 	if (input.value !== '') {
 		generateID();
+		addIDToArray();
 		addTask();
 		addTaskToArray();
 		addTaskToStorage();
@@ -101,7 +125,7 @@ function addTaskToArray() {
 
 function addTaskToStorage() {
 	localStorage.setItem('tasks', JSON.stringify({
-		id: id,
+		idArr: idArr,
 		tasks: taskItemsArr
 	}));
 }
