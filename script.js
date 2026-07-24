@@ -8,6 +8,14 @@ let id = 0;
 
 shoppingForm.addEventListener('submit', function(e) {
 	e.preventDefault();
+	let isListEmpty = checkListEmpty();
+
+	if (isListEmpty) {
+		console.log('list is empty');
+	} else {
+		console.log('list not empty');
+	}
+
 
 	if (input.value !== '') {
 		generateID();
@@ -27,6 +35,15 @@ shoppingForm.addEventListener('submit', function(e) {
 
 	window.dispatchEvent(updateTasksEvent);
 });
+
+
+
+window.addEventListener('storage', (e) => {
+	if (e.key === 'tasks') {
+		console.log(e.newValue);
+	}
+});
+
 
 window.addEventListener('updateTasks', (e) => {
 	let tasks = e.detail.taskItems
@@ -71,12 +88,39 @@ function addTaskToArray() {
 }
 
 function addTaskToStorage() {
-	localStorage.setItem('tasks', {
+	localStorage.setItem('tasks', JSON.stringify({
 		id: id,
 		tasks: taskItemsArr
-	});
+	}));
 }
+
+
+window.addEventListener('storage', (e) => {
+	if(e.key === 'tasks') {
+		let storageTasks = e.newValue;
+
+		console.log('storageTasks: ' + storageTasks);
+	}
+});
+
+
+
+
+function checkListEmpty() {
+	if(list.children.length === 0) { return true; }
+	return false;
+}
+
+function checkLocalStorageIsEmpty() {
+	if (localStorage.length === 0) { return true; }
+	return false;
+}
+
 
 function clearInput() {
 	input.value = '';
+}
+
+function clearExistingList() {
+	list.innerHTML = '';
 }
