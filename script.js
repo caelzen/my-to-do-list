@@ -11,7 +11,11 @@ if (!isLocalStorageEmpty) {
 	let item = JSON.parse(localStorage.getItem('tasks'));
 	let tasks = item.tasks;
 	let id = item.idArr;
+	taskItemsArr = tasks;
+	idArr = id;
 	let i = 0;
+
+	console.log(tasks);
 
 	tasks.forEach(task => {
 		let currentID = id[i];
@@ -29,12 +33,16 @@ if (!isLocalStorageEmpty) {
 		i++;
 	});
 	
+} else {
+	console.log('here');
+	shoppingForm.addEventListener('submit', handleFormSubmit);
 }
 
-shoppingForm.addEventListener('submit', function(e) {
+
+
+function handleFormSubmit(e) {
 	e.preventDefault();
 	let isListEmpty = checkListEmpty();
-	
 
 	main();
 
@@ -43,8 +51,12 @@ shoppingForm.addEventListener('submit', function(e) {
 	} else {
 		console.log('list not empty');
 	}
+}
 
-});
+
+
+
+
 
 function addIDToArray() {
 	idArr.push(id);
