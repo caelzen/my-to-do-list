@@ -12,8 +12,11 @@ if (!isLocalStorageEmpty) {
 	shoppingForm.addEventListener('submit', handleFormSubmit);
 	
 } else {
+	console.log('here');
 	shoppingForm.addEventListener('submit', handleFormSubmit);
 }
+
+deleteTask();
 
 function getCurrentTasks() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
@@ -30,7 +33,7 @@ function getCurrentTasks() {
 		
 		let li = document.createElement('li');
 		let span = document.createElement('span');
-		let removeBtn = createRemoveBtn();
+		let removeBtn = addRemoveBtnUI();
 
 		li.id = 'task' + currentID;
 		li.appendChild(span);
@@ -45,19 +48,9 @@ function getCurrentTasks() {
 
 function handleFormSubmit(e) {
 	e.preventDefault();
-	let isListEmpty = checkListEmpty();
 
 	main();
-
-	if (isListEmpty) {
-		console.log('list is empty');
-	} else {
-		console.log('list not empty');
-	}
 }
-
-
-
 
 
 
@@ -87,6 +80,15 @@ function main() {
 	window.dispatchEvent(updateTasksEvent);
 }
 
+function deleteTask() {
+	list.addEventListener('click', function(e) {
+		let target = e.target;
+		if(target.tagName === 'BUTTON') {
+			target.parentElement.remove();
+		}
+	});
+}
+
 
 
 window.addEventListener('storage', (e) => {
@@ -100,12 +102,8 @@ window.addEventListener('updateTasks', (e) => {
 	let tasks = e.detail.taskItems
 });
 
-list.addEventListener('click', function(e) {
-	let target = e.target;
-	if(target.tagName === 'BUTTON') {
-		target.parentElement.remove();
-	}
-});
+
+
 
 
 function generateID() {
@@ -117,7 +115,7 @@ function addTask() {
 	let task = input.value;
 	let li = document.createElement('li');
 	let span = document.createElement('span');
-	let removeBtn = createRemoveBtn();
+	let removeBtn = addRemoveBtnUI();
 
 	li.id = 'task' + id;
 	li.appendChild(span);
@@ -126,7 +124,7 @@ function addTask() {
 	span.textContent = task;
 }
 
-function createRemoveBtn() {
+function addRemoveBtnUI() {
 	let removeBtn = document.createElement('button');
 	removeBtn.textContent = 'Remove';
 	removeBtn.classList.add('btn-art-delete');
