@@ -3,7 +3,6 @@ let input = document.querySelector('input');
 let list = document.querySelector('#list-container');
 let taskItemsArr = [];
 let idArr = [];
-let id = 0;
 let isLocalStorageEmpty = checkLocalStorageEmpty();
 let lastID = null;
 
@@ -14,7 +13,7 @@ setupDeleteListener();
 setupStorageListener();
 
 function getTasks() {
-	if (isLocalStorageEmpty) {  return; }
+	if (isLocalStorageEmpty) { return; }
 
 	let item = JSON.parse(localStorage.getItem('tasks'));
 	let tasks = item.tasks;
@@ -94,13 +93,15 @@ function addIDToArray() {
 
 function getLocalStorageLastID() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
-	if(item.idArr) {
-		let id = item.idArr;
-		let lastID = Number(id.at(-1));
+	let lastID = 0;
+	if (!item) {
+		// console.log('NO ID');
 		return lastID;
-	} else {
-		return 0;
 	}
+	// console.log("ID_ARRAY" + item.idArr);
+	let id = item.idArr;
+	lastID = Number(id.at(-1));
+	return lastID;
 }
 
 function setupDeleteListener() {
