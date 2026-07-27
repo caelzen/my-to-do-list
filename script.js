@@ -10,10 +10,13 @@ let lastID = null;
 // localStorage.clear();
 
 if (!isLocalStorageEmpty) { getTasks(); }
-
-shoppingForm.addEventListener('submit', handleFormSubmit);
+setupFormListener();
 setupDeleteListener();
 setupStorageListener();
+
+function setupFormListener() {
+	shoppingForm.addEventListener('submit', handleFormSubmit);
+}
 
 function handleFormSubmit(e) {
 	e.preventDefault();
