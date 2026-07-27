@@ -12,6 +12,7 @@ getTasks();
 setupFormListener();
 setupDeleteListener();
 setupStorageListener();
+setupStorageListener();
 
 
 function getTasks() {
@@ -93,9 +94,6 @@ function getLocalStorageLastID() {
 }
 
 
-
-
-
 function setupDeleteListener() {
 	list.addEventListener('click', function(e) {
 		let target = e.target;
@@ -131,11 +129,6 @@ function getIDsFromLocalStorage() {
 }
 
 
-window.addEventListener('storage', (e) => {
-	if (e.key === 'tasks') {
-		console.log(e.newValue);
-	}
-});
 
 
 window.addEventListener('updateTasks', (e) => {
@@ -185,12 +178,11 @@ function updateTasksStorage() {
 }
 
 
+
 function setupStorageListener() {
 	window.addEventListener('storage', (e) => {
 		if(e.key === 'tasks') {
 			let storageTasks = e.newValue;
-
-			console.log('storageTasks: ' + storageTasks);
 		}
 	});
 }
