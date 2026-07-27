@@ -16,7 +16,9 @@ if (!isLocalStorageEmpty) {
 	shoppingForm.addEventListener('submit', handleFormSubmit);
 }
 
+
 deleteTask();
+
 
 function getCurrentTasks() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
@@ -53,7 +55,6 @@ function handleFormSubmit(e) {
 }
 
 
-
 function addIDToArray() {
 	idArr.push(id);
 }
@@ -80,6 +81,7 @@ function main() {
 	window.dispatchEvent(updateTasksEvent);
 }
 
+
 function deleteTask() {
 	list.addEventListener('click', function(e) {
 		let target = e.target;
@@ -94,7 +96,6 @@ function deleteTask() {
 }
 
 
-
 window.addEventListener('storage', (e) => {
 	if (e.key === 'tasks') {
 		console.log(e.newValue);
@@ -105,9 +106,6 @@ window.addEventListener('storage', (e) => {
 window.addEventListener('updateTasks', (e) => {
 	let tasks = e.detail.taskItems
 });
-
-
-
 
 
 function generateID() {
@@ -128,6 +126,7 @@ function addTask() {
 	span.textContent = task;
 }
 
+
 function addRemoveBtnUI() {
 	let removeBtn = document.createElement('button');
 	removeBtn.textContent = 'Remove';
@@ -136,9 +135,11 @@ function addRemoveBtnUI() {
 	return removeBtn;
 } 
 
+
 function addTaskToArray() {
 	taskItemsArr.push(input.value);
 }
+
 
 function addTaskToStorage() {
 	localStorage.setItem('tasks', JSON.stringify({
@@ -157,12 +158,11 @@ window.addEventListener('storage', (e) => {
 });
 
 
-
-
 function checkListEmpty() {
 	if(list.children.length === 0) { return true; }
 	return false;
 }
+
 
 function checkLocalStorageEmpty() {
 	if (localStorage.length === 0) { return true; }
@@ -173,6 +173,7 @@ function checkLocalStorageEmpty() {
 function clearInput() {
 	input.value = '';
 }
+
 
 function clearExistingList() {
 	list.innerHTML = '';
