@@ -5,6 +5,7 @@ let taskItemsArr = [];
 let idArr = [];
 let id = 0;
 let isLocalStorageEmpty = checkLocalStorageEmpty();
+let lastID = null;
 
 // localStorage.clear();
 if (!isLocalStorageEmpty) {
@@ -14,6 +15,24 @@ if (!isLocalStorageEmpty) {
 } else {
 	console.log('here');
 	shoppingForm.addEventListener('submit', handleFormSubmit);
+}
+
+
+function generateID() {
+	let lastID = getLocalStorageLastID();
+	if(lastID) {id = lastID;}
+	id += 1;
+}
+
+
+function getLocalStorageLastID() {
+	
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	if(item) {
+		let id = item.idArr;
+		let lastID = Number(id.at(-1));
+		return lastID;
+	}
 }
 
 
@@ -108,9 +127,7 @@ window.addEventListener('updateTasks', (e) => {
 });
 
 
-function generateID() {
-	id += 1;
-}
+
 
 
 function addTask() {
