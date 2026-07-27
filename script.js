@@ -8,74 +8,17 @@ let isLocalStorageEmpty = checkLocalStorageEmpty();
 let lastID = null;
 
 // localStorage.clear();
-if (!isLocalStorageEmpty) {
-	getCurrentTasks();
-	shoppingForm.addEventListener('submit', handleFormSubmit);
-	
-} else {
-	console.log('here');
-	shoppingForm.addEventListener('submit', handleFormSubmit);
-}
 
+if (!isLocalStorageEmpty) { getTasks(); }
 
-function generateID() {
-	let lastID = getLocalStorageLastID();
-	if(lastID) {id = lastID;}
-	id += 1;
-}
-
-
-function getLocalStorageLastID() {
-	
-	let item = JSON.parse(localStorage.getItem('tasks'));
-	if(item) {
-		let id = item.idArr;
-		let lastID = Number(id.at(-1));
-		return lastID;
-	}
-}
-
-
-deleteTask();
-
-
-function getCurrentTasks() {
-	let item = JSON.parse(localStorage.getItem('tasks'));
-	let tasks = item.tasks;
-	let id = item.idArr;
-	taskItemsArr = tasks;
-	idArr = id;
-	let i = 0;
-
-	console.log(tasks);
-
-	tasks.forEach(task => {
-		let currentID = id[i];
-		
-		let li = document.createElement('li');
-		let span = document.createElement('span');
-		let removeBtn = addRemoveBtnUI();
-
-		li.id = 'task' + currentID;
-		li.appendChild(span);
-		li.appendChild(removeBtn);
-		list.appendChild(li);
-		span.textContent = task;
-
-		i++;
-	});
-}
-
+shoppingForm.addEventListener('submit', handleFormSubmit);
+setupDeleteListener();
+setupStorageListener();
 
 function handleFormSubmit(e) {
 	e.preventDefault();
-
+	
 	main();
-}
-
-
-function addIDToArray() {
-	idArr.push(id);
 }
 
 
@@ -85,11 +28,10 @@ function main() {
 		addIDToArray();
 		addTask();
 		addTaskToArray();
-		addTaskToStorage();
+		updateTasksStorage();
 		clearInput();
 	}
 	
-
 	let updateTasksEvent = new CustomEvent('updateTasks', {
 		detail: {
 			taskItems: taskItemsArr,
@@ -101,7 +43,55 @@ function main() {
 }
 
 
-function deleteTask() {
+
+function generateID() {
+	let lastID = getLocalStorageLastID();
+	if(lastID) {id = lastID;}
+	id += 1;
+}
+
+function getLocalStorageLastID() {
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	if(item) {
+		let id = item.idArr;
+		let lastID = Number(id.at(-1));
+		return lastID;
+	}
+}
+
+function getTasks() {
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	let tasks = item.tasks;
+	let id = item.idArr;
+	taskItemsArr = tasks;
+	idArr = id;
+	let i = 0;
+
+	// console.log(tasks);
+
+	tasks.forEach(task => {
+		let currentID = id[i];
+		
+		let li = document.createElement('li');
+		let span = document.createElement('span');
+		let removeBtn = createRemoveBtn();
+
+		li.id = 'task' + currentID;
+		li.appendChild(span);
+		li.appendChild(removeBtn);
+		list.appendChild(li);
+		span.textContent = task;
+
+		i++;
+	});
+}
+
+function addIDToArray() {
+	idArr.push(id);
+}
+
+
+function setupDeleteListener() {
 	list.addEventListener('click', function(e) {
 		let target = e.target;
 		
@@ -109,6 +99,7 @@ function deleteTask() {
 			let parent = target.parentElement;
 			let parentID = parent.id;
 			let currID = parentID.slice(4)
+
 			deleteTaskFromLocalStorage(currID);
 			parent.remove();
 		}
@@ -122,7 +113,7 @@ function deleteTaskFromLocalStorage(currID) {
 	let index = ids.indexOf(currVal);
 	idArr.splice(index, 1)
 	taskItemsArr.splice(index, 1);
-	updateTaskStorage();
+	updateTasksStorage();
 	// console.log("CURRENT ID: " + currVal);
 	// console.log("THE INDEX IS: " + index);
 	// console.log("IDs: " + ids);
@@ -152,7 +143,7 @@ function addTask() {
 	let task = input.value;
 	let li = document.createElement('li');
 	let span = document.createElement('span');
-	let removeBtn = addRemoveBtnUI();
+	let removeBtn = createRemoveBtn();
 
 	li.id = 'task' + id;
 	li.appendChild(span);
@@ -165,7 +156,9 @@ function addTask() {
 
 
 
-function addRemoveBtnUI() {
+// createRemoveBtn()
+
+function createRemoveBtn() {
 	let removeBtn = document.createElement('button');
 	removeBtn.textContent = 'Remove';
 	removeBtn.classList.add('btn-art-delete');
@@ -174,19 +167,12 @@ function addRemoveBtnUI() {
 } 
 
 
+// Update global variables
 function addTaskToArray() {
 	taskItemsArr.push(input.value);
 }
 
-
-function addTaskToStorage() {
-	localStorage.setItem('tasks', JSON.stringify({
-		idArr: idArr,
-		tasks: taskItemsArr
-	}));
-}
-
-function updateTaskStorage() {
+function updateTasksStorage() {
 	localStorage.setItem('tasks', JSON.stringify({
 		idArr: idArr,
 		tasks: taskItemsArr
@@ -194,13 +180,15 @@ function updateTaskStorage() {
 }
 
 
-window.addEventListener('storage', (e) => {
-	if(e.key === 'tasks') {
-		let storageTasks = e.newValue;
+function setupStorageListener() {
+	window.addEventListener('storage', (e) => {
+		if(e.key === 'tasks') {
+			let storageTasks = e.newValue;
 
-		console.log('storageTasks: ' + storageTasks);
-	}
-});
+			console.log('storageTasks: ' + storageTasks);
+		}
+	});
+}
 
 
 function checkListEmpty() {
