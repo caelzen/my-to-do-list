@@ -84,7 +84,6 @@ window.addEventListener('updateTasks', (e) => {
 
 function generateID() {
 	let lastID = getLocalStorageLastID();
-	if (!lastID) { return; }
 	id = lastID;
 	id += 1;
 
@@ -97,10 +96,12 @@ function addIDToArray() {
 
 function getLocalStorageLastID() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
-	if(item) {
+	if(item.idArr) {
 		let id = item.idArr;
 		let lastID = Number(id.at(-1));
 		return lastID;
+	} else {
+		return 0;
 	}
 }
 
