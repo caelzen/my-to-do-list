@@ -109,9 +109,19 @@ function deleteTask() {
 			let parent = target.parentElement;
 			let parentID = parent.id;
 			let id = parentID.slice(4)
+			deleteTaskFromLocalStorage(id);
 			parent.remove();
 		}
 	});
+}
+
+
+function deleteTaskFromLocalStorage(id) {
+	let valueToRemove = id;
+	let index = idArr.indexOf(valueToRemove);
+	taskItemsArr.splice(index, 1);
+	idArr.splice(index, 1);
+	updateTaskStorage();
 }
 
 
@@ -159,6 +169,13 @@ function addTaskToArray() {
 
 
 function addTaskToStorage() {
+	localStorage.setItem('tasks', JSON.stringify({
+		idArr: idArr,
+		tasks: taskItemsArr
+	}));
+}
+
+function updateTaskStorage() {
 	localStorage.setItem('tasks', JSON.stringify({
 		idArr: idArr,
 		tasks: taskItemsArr
