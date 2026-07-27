@@ -108,20 +108,30 @@ function deleteTask() {
 		if(target.tagName === 'BUTTON') {
 			let parent = target.parentElement;
 			let parentID = parent.id;
-			let id = parentID.slice(4)
-			deleteTaskFromLocalStorage(id);
+			let currID = parentID.slice(4)
+			deleteTaskFromLocalStorage(currID);
 			parent.remove();
 		}
 	});
 }
 
 
-function deleteTaskFromLocalStorage(id) {
-	let valueToRemove = id;
-	let index = idArr.indexOf(valueToRemove);
+function deleteTaskFromLocalStorage(currID) {
+	let currVal = Number(currID);
+	let ids = getIDsFromLocalStorage();
+	let index = ids.indexOf(currVal);
+	idArr.splice(index, 1)
 	taskItemsArr.splice(index, 1);
-	idArr.splice(index, 1);
 	updateTaskStorage();
+	// console.log("CURRENT ID: " + currVal);
+	// console.log("THE INDEX IS: " + index);
+	// console.log("IDs: " + ids);
+}
+
+function getIDsFromLocalStorage() {
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	let newIDArr = item.idArr;
+	return newIDArr;
 }
 
 
@@ -138,8 +148,6 @@ window.addEventListener('updateTasks', (e) => {
 
 
 
-
-
 function addTask() {
 	let task = input.value;
 	let li = document.createElement('li');
@@ -152,6 +160,9 @@ function addTask() {
 	list.appendChild(li);
 	span.textContent = task;
 }
+
+
+
 
 
 function addRemoveBtnUI() {
