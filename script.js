@@ -8,7 +8,6 @@ let isLocalStorageEmpty = checkLocalStorageEmpty();
 let lastID = null;
 
 // localStorage.clear();
-
 getTasks();
 setupFormListener();
 setupDeleteListener();
@@ -44,7 +43,6 @@ function getTasks() {
 	});
 }
 
-
 function setupFormListener() {
 	shoppingForm.addEventListener('submit', handleFormSubmit);
 }
@@ -55,11 +53,9 @@ function handleFormSubmit(e) {
 	main();
 }
 
-
 function main() {
 	if (input.value !== '') {
 		generateID();
-		addIDToArray();
 		addTask();
 		addTaskToArray();
 		updateTasksStorage();
@@ -76,12 +72,16 @@ function main() {
 	window.dispatchEvent(updateTasksEvent);
 }
 
-
-
 function generateID() {
 	let lastID = getLocalStorageLastID();
 	if(lastID) {id = lastID;}
 	id += 1;
+
+	addIDToArray();
+}
+
+function addIDToArray() {
+	idArr.push(id);
 }
 
 function getLocalStorageLastID() {
@@ -94,9 +94,7 @@ function getLocalStorageLastID() {
 }
 
 
-function addIDToArray() {
-	idArr.push(id);
-}
+
 
 
 function setupDeleteListener() {
