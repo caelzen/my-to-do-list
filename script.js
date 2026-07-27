@@ -54,13 +54,12 @@ function handleFormSubmit(e) {
 }
 
 function main() {
-	if (input.value !== '') {
-		generateID();
-		addTask();
-		addTaskToArray();
-		updateTasksStorage();
-		clearInput();
-	}
+	if (input.value === '') { return; }
+	generateID();
+	addTask();
+	addTaskToArray();
+	updateTasksStorage();
+	clearInput();
 	
 	let updateTasksEvent = new CustomEvent('updateTasks', {
 		detail: {
