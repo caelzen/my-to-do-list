@@ -12,7 +12,6 @@ getTasks();
 setupFormListener();
 setupDeleteListener();
 setupStorageListener();
-setupStorageListener();
 
 
 function getTasks() {
@@ -62,6 +61,10 @@ function main() {
 	updateTasksStorage();
 	clearInput();
 	
+	dispatchUpdateTasksEvent();
+}
+
+function dispatchUpdateTasksEvent() {
 	let updateTasksEvent = new CustomEvent('updateTasks', {
 		detail: {
 			taskItems: taskItemsArr,
@@ -72,9 +75,17 @@ function main() {
 	window.dispatchEvent(updateTasksEvent);
 }
 
+
+window.addEventListener('updateTasks', (e) => {
+	let tasks = e.detail.taskItems
+	console.log(tasks);
+});
+
+
 function generateID() {
 	let lastID = getLocalStorageLastID();
-	if(lastID) {id = lastID;}
+	if (!lastID) { return; }
+	id = lastID;
 	id += 1;
 
 	addIDToArray();
@@ -127,13 +138,6 @@ function getIDsFromLocalStorage() {
 	let newIDArr = item.idArr;
 	return newIDArr;
 }
-
-
-
-
-window.addEventListener('updateTasks', (e) => {
-	let tasks = e.detail.taskItems
-});
 
 
 
@@ -192,7 +196,6 @@ function checkListEmpty() {
 	if(list.children.length === 0) { return true; }
 	return false;
 }
-
 
 function checkLocalStorageEmpty() {
 	if (localStorage.length === 0) { return true; }
