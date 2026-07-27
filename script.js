@@ -8,6 +8,14 @@ let isLocalStorageEmpty = checkLocalStorageEmpty();
 
 // localStorage.clear();
 if (!isLocalStorageEmpty) {
+	getCurrentTasks();
+	shoppingForm.addEventListener('submit', handleFormSubmit);
+	
+} else {
+	shoppingForm.addEventListener('submit', handleFormSubmit);
+}
+
+function getCurrentTasks() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
 	let tasks = item.tasks;
 	let id = item.idArr;
@@ -32,12 +40,7 @@ if (!isLocalStorageEmpty) {
 
 		i++;
 	});
-	
-} else {
-	console.log('here');
-	shoppingForm.addEventListener('submit', handleFormSubmit);
 }
-
 
 
 function handleFormSubmit(e) {
