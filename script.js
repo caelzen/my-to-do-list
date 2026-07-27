@@ -83,8 +83,12 @@ function main() {
 function deleteTask() {
 	list.addEventListener('click', function(e) {
 		let target = e.target;
+		
 		if(target.tagName === 'BUTTON') {
-			target.parentElement.remove();
+			let parent = target.parentElement;
+			let parentID = parent.id;
+			let id = parentID.slice(4)
+			parent.remove();
 		}
 	});
 }
