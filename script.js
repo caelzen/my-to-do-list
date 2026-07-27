@@ -9,10 +9,41 @@ let lastID = null;
 
 // localStorage.clear();
 
-if (!isLocalStorageEmpty) { getTasks(); }
+getTasks();
 setupFormListener();
 setupDeleteListener();
 setupStorageListener();
+
+
+function getTasks() {
+	if (isLocalStorageEmpty) {  return; }
+
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	let tasks = item.tasks;
+	let id = item.idArr;
+	taskItemsArr = tasks;
+	idArr = id;
+	let i = 0;
+
+	// console.log(tasks);
+
+	tasks.forEach(task => {
+		let currentID = id[i];
+		
+		let li = document.createElement('li');
+		let span = document.createElement('span');
+		let removeBtn = createRemoveBtn();
+
+		li.id = 'task' + currentID;
+		li.appendChild(span);
+		li.appendChild(removeBtn);
+		list.appendChild(li);
+		span.textContent = task;
+
+		i++;
+	});
+}
+
 
 function setupFormListener() {
 	shoppingForm.addEventListener('submit', handleFormSubmit);
@@ -62,32 +93,6 @@ function getLocalStorageLastID() {
 	}
 }
 
-function getTasks() {
-	let item = JSON.parse(localStorage.getItem('tasks'));
-	let tasks = item.tasks;
-	let id = item.idArr;
-	taskItemsArr = tasks;
-	idArr = id;
-	let i = 0;
-
-	// console.log(tasks);
-
-	tasks.forEach(task => {
-		let currentID = id[i];
-		
-		let li = document.createElement('li');
-		let span = document.createElement('span');
-		let removeBtn = createRemoveBtn();
-
-		li.id = 'task' + currentID;
-		li.appendChild(span);
-		li.appendChild(removeBtn);
-		list.appendChild(li);
-		span.textContent = task;
-
-		i++;
-	});
-}
 
 function addIDToArray() {
 	idArr.push(id);
