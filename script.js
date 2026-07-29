@@ -12,7 +12,7 @@ setupFormListener();
 setupDeleteListener();
 setupStorageListener();
 
-let localStorageItems = viewLocalStorage();
+let localStorageItems = viewLocalStorage(); 
 
 function viewLocalStorage() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
@@ -73,7 +73,7 @@ function main() {
 
 
 function generateID() {
-	console.log("GENERATE ID");
+	// console.log("GENERATE ID");
 	// let item = JSON.parse(localStorage.getItem('tasks'));
 	let id = null;
 
@@ -83,7 +83,7 @@ function generateID() {
 	id += 1;
 
 	addIDToArray(id);
-	console.log("THE ID IS: " + id);
+	// console.log("THE ID IS: " + id);
 }
 
 
@@ -93,19 +93,37 @@ function saveNewTask(taskText) {
 }
 
 
+function addIDToArray(id) {
+	idArr.push(id);
+}
+
+// Update global variables
+function addTaskToArray(taskText) {
+	taskItemsArr.push(taskText);
+}
+
+
+function updateTasksStorage() {
+	localStorage.setItem('tasks', JSON.stringify({
+		idArr: idArr,
+		tasks: taskItemsArr
+	}));
+}
+
+
 function renderTaskUI(taskText) {
-	let task = input.value;
+	// console.log("--renderTaskUI--");
 	let li = document.createElement('li');
 	let span = document.createElement('span');
 	let removeBtn = createRemoveBtn();
+	let id = Number(idArr.at(-1));
 
 	li.id = 'task' + id;
 	li.appendChild(span);
 	li.appendChild(removeBtn);
 	list.appendChild(li);
-	span.textContent = task;
+	span.textContent = taskText;
 }
-
 
 
 function dispatchUpdateTasksEvent() {
@@ -126,10 +144,6 @@ window.addEventListener('updateTasks', (e) => {
 
 
 
-
-function addIDToArray(id) {
-	idArr.push(id);
-}
 
 function getLocalStorageLastID() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
@@ -188,17 +202,9 @@ function createRemoveBtn() {
 	return removeBtn;
 }
 
-// Update global variables
-function addTaskToArray(taskText) {
-	taskItemsArr.push(taskText);
-}
 
-function updateTasksStorage() {
-	localStorage.setItem('tasks', JSON.stringify({
-		idArr: idArr,
-		tasks: taskItemsArr
-	}));
-}
+
+
 
 function setupStorageListener() {
 	window.addEventListener('storage', (e) => {
