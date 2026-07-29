@@ -12,6 +12,16 @@ setupFormListener();
 setupDeleteListener();
 setupStorageListener();
 
+let localStorageItems = viewLocalStorage();
+
+function viewLocalStorage() {
+	let item = JSON.parse(localStorage.getItem('tasks'));
+	let id = item.idArr;
+	let tasks = item.taskItemsArr;
+	return id;
+}
+
+
 function getTasks() {
 	if (isLocalStorageEmpty) { return; }
 
@@ -26,7 +36,7 @@ function getTasks() {
 
 	tasks.forEach(task => {
 		let currentID = id[i];
-		
+
 		let li = document.createElement('li');
 		let span = document.createElement('span');
 		let removeBtn = createRemoveBtn();
@@ -47,20 +57,56 @@ function setupFormListener() {
 
 function handleFormSubmit(e) {
 	e.preventDefault();
-	
+
 	main();
 }
 
 function main() {
-	if (input.value === '') { return; }
+	let taskText = input.value.trim();
+	if (taskText === '') { return; }
 	generateID();
-	addTask();
-	addTaskToArray();
-	updateTasksStorage();
+	saveNewTask(taskText); // Data / Storage update
+	renderTaskUI(taskText); // UI Update
 	clearInput();
-	
 	dispatchUpdateTasksEvent();
 }
+
+
+function generateID() {
+	console.log("GENERATE ID");
+	// let item = JSON.parse(localStorage.getItem('tasks'));
+	let id = null;
+
+	if (idArr.length === 0) { id = 0; } 
+	else { id = Number(idArr.at(-1)); }
+
+	id += 1;
+
+	addIDToArray(id);
+	console.log("THE ID IS: " + id);
+}
+
+
+function saveNewTask(taskText) {
+	addTaskToArray(taskText);
+	updateTasksStorage();
+}
+
+
+function renderTaskUI(taskText) {
+	let task = input.value;
+	let li = document.createElement('li');
+	let span = document.createElement('span');
+	let removeBtn = createRemoveBtn();
+
+	li.id = 'task' + id;
+	li.appendChild(span);
+	li.appendChild(removeBtn);
+	list.appendChild(li);
+	span.textContent = task;
+}
+
+
 
 function dispatchUpdateTasksEvent() {
 	let updateTasksEvent = new CustomEvent('updateTasks', {
@@ -75,40 +121,35 @@ function dispatchUpdateTasksEvent() {
 
 window.addEventListener('updateTasks', (e) => {
 	let tasks = e.detail.taskItems
-	console.log(tasks);
+	console.log("DISPATCH TASKS: " + tasks);
 });
 
 
-function generateID() {
-	let lastID = getLocalStorageLastID();
-	id = lastID;
-	id += 1;
 
-	addIDToArray();
-}
 
-function addIDToArray() {
+function addIDToArray(id) {
 	idArr.push(id);
 }
 
 function getLocalStorageLastID() {
 	let item = JSON.parse(localStorage.getItem('tasks'));
-	let lastID = 0;
+	console.log('ENTERED STORAGE');
 	if (!item) {
-		// console.log('NO ID');
-		return lastID;
+		console.log('NO ITEMS' + item);
+		return 0;
 	}
-	// console.log("ID_ARRAY" + item.idArr);
+
 	let id = item.idArr;
-	lastID = Number(id.at(-1));
-	return lastID;
+	let result = id[id.length - 1];
+	console.log('HAS ITEMS: ' + id[2]);
+	return result;
 }
 
 function setupDeleteListener() {
-	list.addEventListener('click', function(e) {
+	list.addEventListener('click', function (e) {
 		let target = e.target;
-		
-		if(target.tagName === 'BUTTON') {
+
+		if (target.tagName === 'BUTTON') {
 			let parent = target.parentElement;
 			let parentID = parent.id;
 			let currID = parentID.slice(4)
@@ -137,18 +178,7 @@ function getIDsFromLocalStorage() {
 	return newIDArr;
 }
 
-function addTask() {
-	let task = input.value;
-	let li = document.createElement('li');
-	let span = document.createElement('span');
-	let removeBtn = createRemoveBtn();
 
-	li.id = 'task' + id;
-	li.appendChild(span);
-	li.appendChild(removeBtn);
-	list.appendChild(li);
-	span.textContent = task;
-}
 
 function createRemoveBtn() {
 	let removeBtn = document.createElement('button');
@@ -156,11 +186,11 @@ function createRemoveBtn() {
 	removeBtn.classList.add('btn-art-delete');
 
 	return removeBtn;
-} 
+}
 
 // Update global variables
-function addTaskToArray() {
-	taskItemsArr.push(input.value);
+function addTaskToArray(taskText) {
+	taskItemsArr.push(taskText);
 }
 
 function updateTasksStorage() {
@@ -172,14 +202,14 @@ function updateTasksStorage() {
 
 function setupStorageListener() {
 	window.addEventListener('storage', (e) => {
-		if(e.key === 'tasks') {
+		if (e.key === 'tasks') {
 			let storageTasks = e.newValue;
 		}
 	});
 }
 
 function checkListEmpty() {
-	if(list.children.length === 0) { return true; }
+	if (list.children.length === 0) { return true; }
 	return false;
 }
 
